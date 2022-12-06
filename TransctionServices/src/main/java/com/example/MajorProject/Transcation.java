@@ -23,12 +23,16 @@ public class Transcation {
 
     @Column
     private String fromUser;
+
     @Column
     private String toUser;
+
     @Column
     private int amount;
+
     @Column
     private String status;
+
     @Column
     private String transactionTime;
 

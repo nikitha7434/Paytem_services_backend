@@ -43,7 +43,7 @@ public class WalletService {
         String fromuser =(String)walletReqest.get("fromUser");
         String Touser =(String)walletReqest.get("toUser");
         int amount = (Integer) walletReqest.get("amount");
-        String transtionId =(String) walletReqest.get("transactionId");
+        String transactionId =(String) walletReqest.get("transactionId");
 
         //TODO steps
         /*
@@ -73,7 +73,7 @@ public class WalletService {
 
             //push to kafka
             JSONObject sendmessageToTransction= new JSONObject();
-            sendmessageToTransction.put("transactionId",transtionId);
+            sendmessageToTransction.put("transactionId",transactionId);
             sendmessageToTransction.put("TransactionStatus","SUCCESS");
 
             String sendmessage =sendmessageToTransction.toString();
@@ -85,12 +85,12 @@ public class WalletService {
             //sad case
 
             JSONObject sendmessageToTransction= new JSONObject();
-            sendmessageToTransction.put("transactionId",transtionId);
+            sendmessageToTransction.put("transactionId",transactionId);
             sendmessageToTransction.put("TransactionStatus","FAILED");
 
             String sendmessage =sendmessageToTransction.toString();
 
-            kafkaTemplate.send("update_transcation",sendmessage);
+            kafkaTemplate.send("update_transaction",sendmessage);
 
         }
 

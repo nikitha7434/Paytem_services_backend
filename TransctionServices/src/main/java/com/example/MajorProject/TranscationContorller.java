@@ -9,12 +9,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class TranscationContorller {
+
     @Autowired
     TranscationServicess transcationSerices;
+
     @PostMapping("/create")
     public ResponseEntity createTranscation(@RequestBody()TrancationRequest transcationRequset){
 
-        transcationSerices.StartTranscationService(transcationRequset);
+        transcationSerices.StartTranlaationService(transcationRequset);
         return new ResponseEntity<>("Sucess", HttpStatus.OK);
 
     }

@@ -1,6 +1,5 @@
 package com.example.MajorProject;
 
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
@@ -16,11 +15,14 @@ import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.*;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.Properties;
 
 @Configuration
-public class wallerConfig {
+public class TranscationConfig {
+
+
     @Bean
     LettuceConnectionFactory getConnection(){
 
@@ -42,6 +44,7 @@ public class wallerConfig {
 
     @Bean
     ObjectMapper getObjectMapper(){
+
         return new ObjectMapper();
     }
 
@@ -65,15 +68,17 @@ public class wallerConfig {
 
     @Bean
     ConsumerFactory<String,String> getConsumerFactory(){
+
         return new DefaultKafkaConsumerFactory(kafkaProperties());
     }
 
-    // this is only for consumer bcz they have to listen simulteneous .. so this property needs to be there
+    // this is only for consumer bcz they have to listen simultaneous .. so this property needs to be there
 
     @Bean
     ConcurrentKafkaListenerContainerFactory<String,String> concurrentKafkaListenerContainerFactory(){
 
-        ConcurrentKafkaListenerContainerFactory concurrentKafkaListenerContainerFactory=new ConcurrentKafkaListenerContainerFactory<>();
+        ConcurrentKafkaListenerContainerFactory concurrentKafkaListenerContainerFactory =
+                new ConcurrentKafkaListenerContainerFactory<>();
         concurrentKafkaListenerContainerFactory.setConsumerFactory(getConsumerFactory());
         return concurrentKafkaListenerContainerFactory;
     }
@@ -87,5 +92,9 @@ public class wallerConfig {
         return new KafkaTemplate<>(getProducerFactory());
     }
 
+    @Bean
+    RestTemplate getRestTemplate(){
+        return new RestTemplate();
+    }
 
 }
