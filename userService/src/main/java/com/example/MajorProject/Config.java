@@ -33,7 +33,7 @@ public class Config {
         RedisSerializer<String> redisSerializer=new StringRedisSerializer();
         redisTemplate.setKeySerializer(redisSerializer);
         JdkSerializationRedisSerializer jdkSerializationRedisSerializer =new JdkSerializationRedisSerializer();
-        redisTemplate().setValueSerializer(jdkSerializationRedisSerializer);
+        redisTemplate.setValueSerializer(jdkSerializationRedisSerializer);
         redisTemplate.setHashValueSerializer(jdkSerializationRedisSerializer);
         redisTemplate.setConnectionFactory(getConnection());
         return redisTemplate;
@@ -56,6 +56,7 @@ public class Config {
 
     @Bean
     ProducerFactory<String,String> getProducerFactory(){
+
         return new DefaultKafkaProducerFactory(kafkaProperties());
     }
 
