@@ -19,8 +19,10 @@ public class WalletService {
     @Autowired
     KafkaTemplate<String,String> kafkaTemplate;
 
-    @KafkaListener(topics = {"Create_wallet"},groupId = "Govinda_group")
-    public void  CreateWallet(String message)throws JsonProcessingException {
+    public final String create_wallet_topic="create_wallet";
+
+    @KafkaListener(topics = {create_wallet_topic},groupId = "Govinda_group")
+    public void createWallet(String message)throws JsonProcessingException {
 
 
         JSONObject walletRequset = objectMapper.readValue(message,JSONObject.class);

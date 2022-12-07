@@ -7,6 +7,7 @@
 		<module>userService</module>
 		<module>WalletServices</module>
         <module>TransctionServices</module>
+        <module>NotificationServices</module>
     </modules>
 	<parent>
 		<groupId>org.springframework.boot</groupId>

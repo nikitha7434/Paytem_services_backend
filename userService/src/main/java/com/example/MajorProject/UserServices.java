@@ -28,6 +28,7 @@ public class UserServices {
     KafkaTemplate<String,String> kafkaTemplate;
 
     public final String Redis_prefix_Key="user::";
+    public final String create_wallet_topic="create_wallet";
 
     public void cratedAccountForUserService(UserRequset userRequset){
 
@@ -51,7 +52,7 @@ public class UserServices {
 
         //convert jsonobject to string bcz message is in string formate
         String message =jsonObject.toString();
-        kafkaTemplate.send("Create_wallet",message);
+        kafkaTemplate.send(create_wallet_topic,message);
     }
 
     private void saveInCache(User user) {
