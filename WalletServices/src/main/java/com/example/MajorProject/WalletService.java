@@ -24,6 +24,7 @@ public class WalletService {
     @KafkaListener(topics = {create_wallet_topic},groupId = "Govinda_group")
     public void createWallet(String message)throws JsonProcessingException {
 
+        System.out.print("sucess or fails nikitha ");
 
         JSONObject walletRequset = objectMapper.readValue(message,JSONObject.class);
 
