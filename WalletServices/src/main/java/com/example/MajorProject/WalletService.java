@@ -2,6 +2,7 @@ package com.example.MajorProject;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -9,6 +10,7 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 @Service
+@Slf4j
 public class WalletService {
     @Autowired
     WalletRopsitry walletRopsitry;
@@ -35,8 +37,11 @@ public class WalletService {
 
         //we are saving in database
         walletRopsitry.save(wallet);
-
-
+    }
+    @KafkaListener(topics = {"myname"},groupId = "friends_group")
+    public void printmyname(String name){
+        log.debug("createing :","nikitha");
+        System.out.print(name);
     }
 
     @KafkaListener(topics = {"update_wallet"},groupId = "Govinda_group")
