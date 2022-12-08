@@ -5,11 +5,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.net.URI;
 import java.time.Duration;
 import java.util.Date;
 import java.util.Map;
@@ -89,8 +93,53 @@ public class TranscationServicess {
         saveIncache(t);
 
         // pending
-        //call notification service
+      SendNoteficationTOusers(t);
+
 
     }
 
+    private void SendNoteficationTOusers(Transcation t) {
+
+        String fromUser = t.getFromUser();
+        String toUser = t.getToUser();
+        String transationId = t.getTransactionId();
+
+        URI url = URI.create("http://localhost:8076/user?userName=" + fromUser);
+        HttpEntity httpEntity = new HttpEntity(new HttpHeaders());
+
+        JSONObject fromUserObject = restTemplate.exchange(url, HttpMethod.GET, httpEntity, JSONObject.class).getBody();
+        String senderName = (String) fromUserObject.get("name");
+        String senderEmail = (String) fromUserObject.get("email");
+
+        url = URI.create("http://localhost:8076/user?userName=" + toUser);
+        httpEntity = new HttpEntity(new HttpHeaders());
+
+        JSONObject toUserObject = restTemplate.exchange(url, HttpMethod.GET, httpEntity, JSONObject.class).getBody();
+        String toUserName = (String) toUserObject.get("name");
+        String toUserEmail = (String) toUserObject.get("email");
+
+
+        JSONObject EmailReqest = new JSONObject();
+        EmailReqest.put("email", senderEmail);
+        String senderBOdy = String.format("Hi %s the transcation with transactionId %s has been %s of Rs %d",
+                senderName, transationId, t.getStatus(), t.getAmount());
+
+        EmailReqest.put("message", senderBOdy);
+        String message = EmailReqest.toString();
+
+        //send it to kafka
+        kafkaTemplate.send("send_email", message);
+
+
+        if (t.getStatus().equals("FAILED")) {
+
+            return;
+        }
+        //email the reciver also
+EmailReqest.put("email",toUserEmail);
+        String reciverMessageBody = String.format("hi %s the transaction with transactionId %s has been %s of Rs %d",
+                toUserName, transationId, t.getStatus(), t.getAmount());
+        message = EmailReqest.toString();
+        kafkaTemplate.send("send_email", message);
+    }
 }
