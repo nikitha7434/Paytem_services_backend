@@ -53,8 +53,7 @@ public class UserServices {
         //convert jsonobject to string bcz message is in string formate
         String message =jsonObject.toString();
         kafkaTemplate.send(create_wallet_topic,message);
-        String name ="nikitha";
-        kafkaTemplate.send("myname","name");
+
     }
 
     private void saveInCache(User user) {

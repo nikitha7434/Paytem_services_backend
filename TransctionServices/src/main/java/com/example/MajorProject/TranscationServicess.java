@@ -136,10 +136,25 @@ public class TranscationServicess {
             return;
         }
         //email the reciver also
-EmailReqest.put("email",toUserEmail);
+        EmailReqest.put("email",toUserEmail);
         String reciverMessageBody = String.format("hi %s the transaction with transactionId %s has been %s of Rs %d",
                 toUserName, transationId, t.getStatus(), t.getAmount());
         message = EmailReqest.toString();
         kafkaTemplate.send("send_email", message);
+    }
+
+
+    public void DepositeMoney(String userName, int amount) {
+
+        // sending message to wallet services
+        JSONObject walletRequest =new JSONObject();
+        walletRequest.put("userName",userName);
+        walletRequest.put("amount",amount);
+
+        String message =walletRequest.toString();
+        kafkaTemplate.send("deposited_money",message);
+
+
+
     }
 }

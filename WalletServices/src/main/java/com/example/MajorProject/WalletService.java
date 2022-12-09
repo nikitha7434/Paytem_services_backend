@@ -26,7 +26,7 @@ public class WalletService {
     @KafkaListener(topics = {create_wallet_topic},groupId = "Govinda_group")
     public void createWallet(String message)throws JsonProcessingException {
 
-        System.out.print("sucess or fails nikitha ");
+        //System.out.print("sucess or fails nikitha ");
 
         JSONObject walletRequset = objectMapper.readValue(message,JSONObject.class);
 
@@ -38,10 +38,24 @@ public class WalletService {
         //we are saving in database
         walletRopsitry.save(wallet);
     }
-    @KafkaListener(topics = {"myname"},groupId = "friends_group")
-    public void printmyname(String name){
-        log.debug("createing :","nikitha");
-        System.out.print(name);
+    @KafkaListener(topics = {"deposited_money"},groupId = "Govinda_group")
+    public void DepositeMoney(String message) throws Exception {
+
+        JSONObject walletRequset = objectMapper.readValue(message,JSONObject.class);
+        String userName =(String) walletRequset.get("userName");
+        int  amount =(Integer) walletRequset.get("amount");
+
+        Wallet wallet =walletRopsitry.findByUserName(userName);
+        if(wallet !=null){
+            wallet.setBalance(wallet.getBalance()+amount);
+            walletRopsitry.save(wallet);
+
+        }else{
+            throw new Exception("userName is not fount");
+        }
+
+
+
     }
 
     @KafkaListener(topics = {"update_wallet"},groupId = "Govinda_group")
