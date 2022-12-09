@@ -53,7 +53,7 @@ public class WalletService {
         int amount = (Integer) walletReqest.get("amount");
         String transactionId =(String) walletReqest.get("transactionId");
 
-        //TODO steps
+
         /*
         if fail (if sender balancer is not sufficent)
         send status as failed
@@ -86,7 +86,7 @@ public class WalletService {
 
             String sendmessage =sendmessageToTransction.toString();
 
-            kafkaTemplate.send("update_transcation",sendmessage);
+            kafkaTemplate.send("update_transaction",sendmessage);
 
         }
         else{

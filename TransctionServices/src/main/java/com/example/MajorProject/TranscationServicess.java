@@ -52,7 +52,7 @@ public class TranscationServicess {
         //save in cache
         saveIncache(transcation);
 
-        //ToDo step send a message to wallet with help of help to update a wallet
+//        step send a message to wallet with help of help to update a wallet
         JSONObject walletRequest =new JSONObject();
         walletRequest.put("fromUser",transcationRequset.getFromUser());
         walletRequest.put("toUser",transcationRequset.getToUser());
@@ -104,14 +104,14 @@ public class TranscationServicess {
         String toUser = t.getToUser();
         String transationId = t.getTransactionId();
 
-        URI url = URI.create("http://localhost:8076/user?userName=" + fromUser);
+        URI url = URI.create("http://localhost:8078/user?userName=" + fromUser);
         HttpEntity httpEntity = new HttpEntity(new HttpHeaders());
 
         JSONObject fromUserObject = restTemplate.exchange(url, HttpMethod.GET, httpEntity, JSONObject.class).getBody();
         String senderName = (String) fromUserObject.get("name");
         String senderEmail = (String) fromUserObject.get("email");
 
-        url = URI.create("http://localhost:8076/user?userName=" + toUser);
+        url = URI.create("http://localhost:8078/user?userName=" + toUser);
         httpEntity = new HttpEntity(new HttpHeaders());
 
         JSONObject toUserObject = restTemplate.exchange(url, HttpMethod.GET, httpEntity, JSONObject.class).getBody();

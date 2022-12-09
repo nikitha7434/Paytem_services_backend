@@ -23,14 +23,14 @@ public class NoficationConfig {
         mailSender.setHost("smtp.gmail.com");
         mailSender.setPort(587);
 
-        mailSender.setUsername("backendacciojon@gmail.com");
-        mailSender.setPassword("Accio1234");
+        mailSender.setUsername("paytemtest1@gmail.com");
+        mailSender.setPassword("sqxiuhrguconkwwc");
 
 
         Properties pre =mailSender.getJavaMailProperties();
         pre.put("mail.transport.protocol","smtp");
         pre.put("mail.smtp.auth",true);
-        pre.put("mail.smtp.starttls.enable","true");
+        pre.put("mail.smtp.starttls.enable",true);
         pre.put("mail.debug","true");
     return mailSender;
     }
